@@ -1,33 +1,34 @@
-import type {
-  GetServerSideProps,
-  InferGetServerSidePropsType,
-  NextPage,
-} from 'next'
+import type { NextPage } from 'next'
 import WordItem from 'components/WordItem'
-import prisma from 'lib/prisma'
 import { useRouter } from 'next/router'
 import { useRef, useState } from 'react'
-import { getSession } from 'next-auth/react'
 import { User, Word, Wordjang } from '@prisma/client'
 import Nav from 'components/Nav'
 import WordEditor from 'components/WordEditor'
+import useSWR from 'swr'
 
-const Wordjang: NextPage<{
-  wordjang: {
-    name: string
-    user: User
-    word: Word[]
-  } | null
-}> = ({ wordjang }) => {
+const Wordjang: NextPage = () => {
   const router = useRouter()
 
   const { id } = router.query
+
+  const fetcher = (url: string) =>
+    fetch(url).then((r) => {
+      return r.json()
+    })
+
+  const { data: wordjang } = useSWR<{
+    name: string
+    user: User
+    word: Word[]
+  }>(`/api/wordjang/${id}`, fetcher)
 
   const [word, setWord] = useState(``)
   const [example, setExample] = useState(``)
   const [definition, setDefinition] = useState(``)
 
   const [opened, setOpened] = useState(false)
+
   //word to edit
   const [editWord, setEditWord] = useState<Word>()
 
@@ -131,29 +132,3 @@ const Wordjang: NextPage<{
 }
 
 export default Wordjang
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession(context)
-  const { id } = context.query
-
-  if (session) {
-    const wordjang = await prisma.wordjang.findUnique({
-      where: { id: id as string },
-      select: { name: true, user: true, word: true },
-    })
-
-    if (session.user?.email != wordjang?.user.email) {
-      return {
-        props: {},
-      }
-    }
-
-    return {
-      props: { wordjang },
-    }
-  } else {
-    return {
-      props: {},
-    }
-  }
-}
