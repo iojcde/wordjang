@@ -7,7 +7,7 @@ CREATE TABLE "Account" (
     "providerAccountId" TEXT NOT NULL,
     "refresh_token" TEXT,
     "access_token" TEXT,
-    "expires_at" INTEGER,
+    "expires_at" INT4,
     "token_type" TEXT,
     "scope" TEXT,
     "id_token" TEXT,
@@ -38,6 +38,28 @@ CREATE TABLE "User" (
 );
 
 -- CreateTable
+CREATE TABLE "Wordjang" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Wordjang_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Word" (
+    "id" TEXT NOT NULL,
+    "wordjangId" TEXT NOT NULL,
+    "word" TEXT NOT NULL,
+    "definition" TEXT NOT NULL,
+    "example" TEXT NOT NULL,
+
+    CONSTRAINT "Word_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "VerificationToken" (
     "identifier" TEXT NOT NULL,
     "token" TEXT NOT NULL,
@@ -64,3 +86,9 @@ ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId"
 
 -- AddForeignKey
 ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Wordjang" ADD CONSTRAINT "Wordjang_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Word" ADD CONSTRAINT "Word_wordjangId_fkey" FOREIGN KEY ("wordjangId") REFERENCES "Wordjang"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
