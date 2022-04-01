@@ -1,0 +1,16 @@
+{
+    "functions": {
+       "pages/api/auth/[...nextauth].js": {
+          "includeFiles": "db-cert.pem"
+       },
+       "pages/api/auth/wordjang.js": {
+            "includeFiles": "db-cert.pem"
+        },  
+        "pages/api/auth/wordjang/[id].js": {
+            "includeFiles": "db-cert.pem"
+        },
+        "pages/api/auth/word.js": {
+            "includeFiles": "db-cert.pem"
+        }
+    }
+ }
