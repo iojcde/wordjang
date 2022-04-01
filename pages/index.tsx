@@ -4,9 +4,11 @@ import useSWR from 'swr'
 import Nav from 'components/Nav'
 import Link from 'next/link'
 import { Word } from '@prisma/client'
-import { useState } from 'react'
+import { useSession, signIn } from 'next-auth/react'
 
 const Home: NextPage = () => {
+  const { data: session } = useSession()
+
   const fetcher = (url: string) =>
     fetch(url).then((r) => {
       return r.json()
@@ -22,7 +24,19 @@ const Home: NextPage = () => {
       createdAt: Date
       updatedAt: Date
     }[]
-  >(`/api/wordjang`, fetcher)
+  >(session ? `/api/wordjang` : null, fetcher)
+
+  if (!session) {
+    return (
+      <div>
+        <Nav />
+
+        <div className="px-4 py-4 lg:px-8 max-w-4xl mx-auto mt-8 ">
+          Please <button onClick={() => signIn()}>sign in</button>.
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div>

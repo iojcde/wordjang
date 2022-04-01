@@ -6,9 +6,11 @@ import { User, Word, Wordjang } from '@prisma/client'
 import Nav from 'components/Nav'
 import WordEditor from 'components/WordEditor'
 import useSWR from 'swr'
+import { useSession, signIn } from 'next-auth/react'
 
 const Wordjang: NextPage = () => {
   const router = useRouter()
+  const { data: session } = useSession()
 
   const { id } = router.query
 
@@ -21,7 +23,7 @@ const Wordjang: NextPage = () => {
     name: string
     user: User
     word: Word[]
-  }>(`/api/wordjang/${id}`, fetcher)
+  }>(session ? `/api/wordjang/${id}` : null, fetcher)
 
   const [word, setWord] = useState(``)
   const [example, setExample] = useState(``)
@@ -58,6 +60,18 @@ const Wordjang: NextPage = () => {
     } catch (error) {
       console.error(error)
     }
+  }
+
+  if (!session) {
+    return (
+      <div>
+        <Nav />
+
+        <div className="px-4 py-4 lg:px-8 max-w-4xl mx-auto mt-8 ">
+          Please <button onClick={() => signIn()}>sign in</button>.
+        </div>
+      </div>
+    )
   }
 
   return (
