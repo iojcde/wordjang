@@ -5,7 +5,9 @@ const WordItem: React.FC<{
   def: string
   example: string
   onEdit: MouseEventHandler<HTMLButtonElement>
-}> = ({ word, def, example, onEdit }) => {
+
+  onDelete: MouseEventHandler<HTMLButtonElement>
+}> = ({ word, def, example, onEdit, onDelete }) => {
   return (
     <div className="my-3 text-lg w-full border rounded-xl p-4">
       <div className="flex items-center">
@@ -13,6 +15,9 @@ const WordItem: React.FC<{
 
         <button className="w-8 h-8 ml-4 text-sm" onClick={onEdit}>
           Edit
+        </button>
+        <button className="w-8 h-8 ml-4 text-sm" onClick={onDelete}>
+          Delete
         </button>
       </div>
       <p className="col-span-4 my-1">{def}</p>

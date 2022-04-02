@@ -44,6 +44,26 @@ export default async function handler(
       })
 
       return res.json(result)
+    } else if (req.method == `DELETE`) {
+      const { id } = req.body
+      const email = await prisma.word
+        .findUnique({
+          where: { id },
+          select: {
+            wordjang: { select: { user: { select: { email: true } } } },
+          },
+        })
+        .then((res) => res?.wordjang.user.email)
+
+      if (email != session.user?.email) {
+        return res.status(401).json({ status: `unauthorized` })
+      }
+
+      const result = await prisma.word.delete({
+        where: { id },
+      })
+
+      return res.json(result)
     } else {
       res.status(400).json({ status: `invalid request` })
     }

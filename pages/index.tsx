@@ -39,14 +39,17 @@ const Home: NextPage = () => {
   }
 
   return (
-    <div>
+    <>
       <Nav />
       <div className="px-4 py-4 lg:px-8 max-w-4xl mx-auto mt-8 ">
         <h2 className="text-4xl font-bold">My Wordjangs</h2>
         {wordjangs ? (
           <div className="mt-4">
             {wordjangs?.map((wj) => (
-              <div key={wj.name} className="rounded-xl px-4 py-2 border">
+              <div
+                key={wj.name}
+                className="rounded-xl shadow bg-white my-2 p-4 border"
+              >
                 <Link href={`/wordjang/${wj.id}`}>
                   <a className="font-bold text-2xl capitalize">{wj.name}</a>
                 </Link>
@@ -74,7 +77,7 @@ const Home: NextPage = () => {
           </>
         )}
       </div>
-    </div>
+    </>
   )
 }
 

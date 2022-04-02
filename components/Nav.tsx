@@ -9,6 +9,8 @@ const Nav = () => (
       </h1>
       <div className="flex items-center gap-4 text-sm">
         <Link href="/wordjang/new">New</Link>
+        <Link href="/test">Test</Link>
+        <Link href="/about">About</Link>
       </div>
     </div>
     <UserSection />

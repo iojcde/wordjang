@@ -1,12 +1,13 @@
 import type { NextPage } from 'next'
 import WordItem from 'components/WordItem'
 import { useRouter } from 'next/router'
-import { useRef, useState } from 'react'
+import { Fragment, useRef, useState } from 'react'
 import { User, Word, Wordjang } from '@prisma/client'
 import Nav from 'components/Nav'
 import WordEditor from 'components/WordEditor'
 import useSWR from 'swr'
 import { useSession, signIn } from 'next-auth/react'
+import WordDeleter from 'components/DeletePopup'
 
 const Wordjang: NextPage = () => {
   const router = useRouter()
@@ -29,10 +30,13 @@ const Wordjang: NextPage = () => {
   const [example, setExample] = useState(``)
   const [definition, setDefinition] = useState(``)
 
-  const [opened, setOpened] = useState(false)
+  const [editOpened, setEditOpened] = useState(false)
+  const [deleteOpened, setDeleteOpened] = useState(false)
 
   //word to edit
   const [editWord, setEditWord] = useState<Word>()
+  //word to delete
+  const [deleteWord, setDeleteWord] = useState<Word>()
 
   const wordInputRef = useRef<HTMLInputElement>(null)
 
@@ -64,18 +68,18 @@ const Wordjang: NextPage = () => {
 
   if (!session) {
     return (
-      <div>
+      <>
         <Nav />
 
         <div className="px-4 py-4 lg:px-8 max-w-4xl mx-auto mt-8 ">
           Please <button onClick={() => signIn()}>sign in</button>.
         </div>
-      </div>
+      </>
     )
   }
 
   return (
-    <div>
+    <>
       <Nav />
       <div className="px-4 py-4 lg:px-8 max-w-4xl mx-auto mt-8 ">
         <h1 className="text-4xl font-bold capitalize">
@@ -132,16 +136,29 @@ const Wordjang: NextPage = () => {
                 word={w.word}
                 onEdit={() => {
                   setEditWord(w)
-                  setOpened(true)
+                  setEditOpened(true)
+                }}
+                onDelete={() => {
+                  setDeleteWord(w)
+                  setDeleteOpened(true)
                 }}
                 def={w.definition}
                 example={w.example}
               />
             ))}
         </div>
-        <WordEditor editWord={editWord} setOpen={setOpened} isOpen={opened} />
+        <WordEditor
+          editWord={editWord}
+          setOpen={setEditOpened}
+          isOpen={editOpened}
+        />
+        <WordDeleter
+          deleteWord={deleteWord}
+          setOpen={setDeleteOpened}
+          isOpen={deleteOpened}
+        />
       </div>
-    </div>
+    </>
   )
 }
 

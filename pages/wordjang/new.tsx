@@ -33,7 +33,7 @@ const NewWordjang = () => {
   }
 
   return (
-    <div>
+    <>
       <Nav />
 
       <div className="px-4 py-4 lg:px-8 max-w-4xl mx-auto mt-8 ">
@@ -41,15 +41,15 @@ const NewWordjang = () => {
           New wordjang
         </h2>
         <div className="mt-2">
-          <h3 className="text-gray-500">Choose a name for the new wordjang:</h3>
+          <h3 className="text-gray-600">Choose a name for the new wordjang:</h3>
           <form onSubmit={newWordjang}>
             <input
               autoFocus
               onChange={(e) => setName(e.target.value)}
               placeholder="Name"
-              className="px-2"
               type="text"
               value={name}
+              className="px-2 outline-none border border-gray-300 focus:border-gray-500 rounded-md py-1 mr-2 mt-2"
             />
 
             <input
@@ -61,7 +61,7 @@ const NewWordjang = () => {
           </form>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

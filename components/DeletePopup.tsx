@@ -1,51 +1,35 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Word } from '@prisma/client'
 import { useRouter } from 'next/router'
-import { Dispatch, Fragment, SetStateAction, useEffect, useState } from 'react'
+import { Dispatch, Fragment, SetStateAction, useState } from 'react'
 import { mutate, useSWRConfig } from 'swr'
 import LoadingSpinner from './LoadingSpinner'
 
-const WordEditor: React.FC<{
-  editWord: Word | undefined
+const WordDeleter: React.FC<{
+  deleteWord: Word | undefined
   isOpen: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
-}> = ({ editWord, isOpen, setOpen }) => {
+}> = ({ deleteWord, isOpen, setOpen }) => {
   const closeModal = () => setOpen(false)
-  const [word, setWord] = useState(``)
-  const [example, setExample] = useState(``)
-  const [definition, setDefinition] = useState(``)
-  const [replacing, setReplacing] = useState(false)
+  const [deleting, setDeleting] = useState(false)
 
   const router = useRouter()
   const { id } = router.query
 
-  useEffect(() => {
-    if (editWord) {
-      setWord(editWord?.word)
-
-      setExample(editWord?.example)
-
-      setDefinition(editWord?.definition)
-    }
-
-    setReplacing(false)
-  }, [editWord])
-
-  const onEditWord = async (e: React.SyntheticEvent) => {
+  const onDeleteWord = async (e: React.SyntheticEvent) => {
     e.preventDefault()
     try {
-      const body = { id: editWord?.id, word, example, definition }
+      const body = { id: deleteWord?.id }
 
-      setReplacing(true)
+      setDeleting(true)
       await fetch(`/api/word`, {
-        method: `PATCH`,
+        method: `DELETE`,
         headers: { 'Content-Type': `application/json` },
         body: JSON.stringify(body),
       }).then((res) => res.json())
 
       await mutate(`/api/wordjang/${id}`)
-      setReplacing(false)
-
+      setDeleting(false)
       setOpen(false)
     } catch (error) {
       console.error(error)
@@ -89,41 +73,22 @@ const WordEditor: React.FC<{
             leaveTo="opacity-0 scale-95"
           >
             <div className="inline-block w-full max-w-2xl p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
-              {replacing ? (
+              {deleting ? (
                 <LoadingSpinner />
               ) : (
-                <form onSubmit={onEditWord}>
+                <form onSubmit={onDeleteWord}>
                   <Dialog.Title as="h2" className="text-2xl font-bold">
-                    Edit Word
+                    Delete {deleteWord?.word}?
                   </Dialog.Title>
                   <div className="flex flex-wrap gap-2 mt-2">
                     <input
-                      autoFocus
-                      onChange={(e) => setWord(e.target.value)}
-                      placeholder="Word"
-                      className="px-2 outline-none border font-bold border-gray-300 focus:border-gray-500 rounded-md py-1"
-                      type="text"
-                      value={word}
-                    />
-
-                    <textarea
-                      onChange={(e) => setDefinition(e.target.value)}
-                      placeholder="Definition"
-                      className="px-2 outline-none border w-full resize-none border-gray-3`00 focus:border-gray-500 rounded-md py-1"
-                      value={definition}
-                    />
-
-                    <textarea
-                      onChange={(e) => setExample(e.target.value)}
-                      placeholder="Example"
-                      className="px-2 outline-none border w-full resize-none border-gray-300 focus:border-gray-500 rounded-md py-1"
-                      value={example}
-                    />
-
-                    <input
-                      disabled={!word || !definition}
                       type="submit"
-                      value="Save"
+                      value="yeah"
+                      className="inline-flex mt-4 justify-center px-4 py-1 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                    />
+                    <input
+                      onClick={closeModal}
+                      value="Cancel"
                       className="inline-flex mt-4 justify-center px-4 py-1 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                     />
                   </div>
@@ -136,4 +101,4 @@ const WordEditor: React.FC<{
     </Transition>
   )
 }
-export default WordEditor
+export default WordDeleter
