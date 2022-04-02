@@ -19,6 +19,9 @@ export default async function handler(
       if (session.user?.email != wordjang?.user.email) {
         return res.status(401).json({ status: `unauthorized` })
       }
+
+      wordjang?.word.reverse()
+      
       return res.json(wordjang)
     }
 

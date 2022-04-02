@@ -7,7 +7,7 @@ import { Word } from '@prisma/client'
 import { useSession, signIn } from 'next-auth/react'
 
 const Home: NextPage = () => {
-  const { data: session } = useSession()
+  const { data: session,status } = useSession()
 
   const fetcher = (url: string) =>
     fetch(url).then((r) => {
@@ -26,7 +26,7 @@ const Home: NextPage = () => {
     }[]
   >(session ? `/api/wordjang` : null, fetcher)
 
-  if (!session) {
+  if (status == 'unauthenticated') {
     return (
       <div>
         <Nav />
