@@ -2,7 +2,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { Word } from '@prisma/client'
 import { useRouter } from 'next/router'
 import { Dispatch, Fragment, SetStateAction, useEffect, useState } from 'react'
-import { mutate, useSWRConfig } from 'swr'
+import { mutate } from 'swr'
 import LoadingSpinner from './LoadingSpinner'
 
 const WordEditor: React.FC<{

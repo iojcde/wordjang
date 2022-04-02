@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 const NewWordjang = () => {
   const [name, setName] = useState(``)
-  const session = useSession()
+  const { data: session, status } = useSession()
 
   const newWordjang = async (e: React.SyntheticEvent) => {
     e.preventDefault()
@@ -20,15 +20,20 @@ const NewWordjang = () => {
     }
   }
 
-  if (!session) {
+  if (status == `unauthenticated`) {
     return (
-      <div>
+      <>
         <Nav />
 
-        <div className="px-4 py-4 lg:px-8 max-w-4xl mx-auto mt-8 ">
-          Please <button onClick={() => signIn()}>sign in</button>.
+        <div className="px-4 py-4 lg:px-8 max-w-4xl mx-auto mt-8 text-xl">
+          Please{` `}
+          <button className="font-semibold" onClick={() => signIn()}>
+            sign in
+          </button>
+          {` `}
+          to get started.
         </div>
-      </div>
+      </>
     )
   }
 

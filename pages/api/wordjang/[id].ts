@@ -21,7 +21,7 @@ export default async function handler(
       }
 
       wordjang?.word.reverse()
-      
+
       return res.json(wordjang)
     }
 

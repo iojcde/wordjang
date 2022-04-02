@@ -1,13 +1,13 @@
 import { Word } from '@prisma/client'
 import Nav from 'components/Nav'
 import TestForm from 'components/TestForm'
-import { useSession } from 'next-auth/react'
-import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useSession, signIn } from 'next-auth/react'
+
+import { useState } from 'react'
 import useSWR from 'swr'
 
 const Test = () => {
-  const session = useSession()
+  const { data: session, status } = useSession()
   // useEffect(() => {
   //   window.onbeforeunload = () => {
   //     return true
@@ -47,6 +47,22 @@ const Test = () => {
 
     setSelected(updatedCheckedState)
     selectedWordjangs = wordjangs?.filter((_, i) => selected[i])
+  }
+  if (status == `unauthenticated`) {
+    return (
+      <>
+        <Nav />
+
+        <div className="px-4 py-4 lg:px-8 max-w-4xl mx-auto mt-8 text-xl">
+          Please{` `}
+          <button className="font-semibold" onClick={() => signIn()}>
+            sign in
+          </button>
+          {` `}
+          to get started.
+        </div>
+      </>
+    )
   }
 
   return (

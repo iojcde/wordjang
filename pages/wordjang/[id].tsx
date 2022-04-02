@@ -11,7 +11,7 @@ import WordDeleter from 'components/DeletePopup'
 
 const Wordjang: NextPage = () => {
   const router = useRouter()
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
 
   const { id } = router.query
 
@@ -66,13 +66,18 @@ const Wordjang: NextPage = () => {
     }
   }
 
-  if (!session) {
+  if (status == `unauthenticated`) {
     return (
       <>
         <Nav />
 
-        <div className="px-4 py-4 lg:px-8 max-w-4xl mx-auto mt-8 ">
-          Please <button onClick={() => signIn()}>sign in</button>.
+        <div className="px-4 py-4 lg:px-8 max-w-4xl mx-auto mt-8 text-xl">
+          Please{` `}
+          <button className="font-semibold" onClick={() => signIn()}>
+            sign in
+          </button>
+          {` `}
+          to get started.
         </div>
       </>
     )

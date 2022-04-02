@@ -1,5 +1,5 @@
 import { Word } from '@prisma/client'
-import React, { ReactEventHandler, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 const TestForm: React.FC<{
   wordjangs:
