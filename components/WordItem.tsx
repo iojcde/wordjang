@@ -8,7 +8,6 @@ const WordItem: React.FC<{
 
   onDelete: MouseEventHandler<HTMLButtonElement>
 }> = ({ word, def, example, onEdit, onDelete }) => {
-  console.log(def)
   return (
     <div className="my-3 text-lg w-full border rounded-xl p-4 px-5">
       <div className="flex items-center">
