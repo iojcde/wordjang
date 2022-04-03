@@ -7,7 +7,7 @@ const Nav = () => (
       <h1 className="text-2xl font-bold mr-8">
         <Link href="/">Wordjang</Link>
       </h1>
-      <div className="flex items-center gap-4 text-sm">
+      <div className="flex items-center gap-6 text-sm">
         <Link href="/wordjang/new">New</Link>
         <Link href="/test">Test</Link>
         <Link href="/about">About</Link>

@@ -101,4 +101,5 @@ const WordDeleter: React.FC<{
     </Transition>
   )
 }
+
 export default WordDeleter

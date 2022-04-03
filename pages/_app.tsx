@@ -1,11 +1,18 @@
 import type { AppProps /*, AppContext */ } from 'next/app'
 import 'styles/globals.css'
 import { SessionProvider } from 'next-auth/react'
+import Nav from 'components/Nav'
+import Footer from 'components/Footer'
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
     <SessionProvider session={session}>
-      <Component {...pageProps} />
+      <Nav />
+
+      <div className="px-4 py-4 lg:px-8 max-w-4xl mx-auto mt-8 min-h-[85vh]">
+        <Component {...pageProps} />
+      </div>
+      <Footer />
     </SessionProvider>
   )
 }

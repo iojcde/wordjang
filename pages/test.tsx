@@ -1,5 +1,4 @@
 import { Word } from '@prisma/client'
-import Nav from 'components/Nav'
 import TestForm from 'components/TestForm'
 import { useSession, signIn } from 'next-auth/react'
 
@@ -48,58 +47,52 @@ const Test = () => {
     setSelected(updatedCheckedState)
     selectedWordjangs = wordjangs?.filter((_, i) => selected[i])
   }
+
   if (status == `unauthenticated`) {
     return (
-      <>
-        <Nav />
-
-        <div className="px-4 py-4 lg:px-8 max-w-4xl mx-auto mt-8 text-xl">
-          Please{` `}
-          <button className="font-semibold" onClick={() => signIn()}>
-            sign in
-          </button>
-          {` `}
-          to get started.
-        </div>
-      </>
+      <h1 className="text-xl">
+        Please{` `}
+        <button className="font-semibold" onClick={() => signIn()}>
+          sign in
+        </button>
+        {` `}
+        to get started.
+      </h1>
     )
   }
 
   return (
     <>
-      <Nav />
-      <div className="px-4 py-4 lg:px-8 max-w-4xl mx-auto mt-8 ">
-        {started ? (
-          <TestForm wordjangs={selectedWordjangs} />
-        ) : (
-          <>
-            take a test lol
-            <div className="mt-8">
-              <h2 className="font-semibold text-2xl">
-                Select wordjangs to take a test with:
-              </h2>
-              {wordjangs &&
-                wordjangs.map((wj, i) => (
-                  <div className=" capitalize" key={wj.id}>
-                    <input
-                      className="outline-none"
-                      type="checkbox"
-                      onClick={() => handleSelected(i)}
-                    ></input>
-                    {` `}
-                    {wj.name}
-                  </div>
-                ))}
-              <button
-                onClick={() => setStarted(true)}
-                className="inline-flex mt-4 justify-center px-4 py-1 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-              >
-                lesgoo
-              </button>
-            </div>
-          </>
-        )}
-      </div>
+      {started ? (
+        <TestForm wordjangs={selectedWordjangs} />
+      ) : (
+        <>
+          take a test lol
+          <div className="mt-8">
+            <h2 className="font-semibold text-2xl">
+              Select wordjangs to take a test with:
+            </h2>
+            {wordjangs &&
+              wordjangs.map((wj, i) => (
+                <div className=" capitalize" key={wj.id}>
+                  <input
+                    className="outline-none"
+                    type="checkbox"
+                    onClick={() => handleSelected(i)}
+                  ></input>
+                  {` `}
+                  {wj.name}
+                </div>
+              ))}
+            <button
+              onClick={() => setStarted(true)}
+              className="inline-flex mt-4 justify-center px-4 py-1 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+            >
+              lesgoo
+            </button>
+          </div>
+        </>
+      )}
     </>
   )
 }
