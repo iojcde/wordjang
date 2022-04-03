@@ -1,6 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react'
-import { Word } from '@prisma/client'
 import { useRouter } from 'next/router'
+import { Word } from '@prisma/client'
 import { Dispatch, Fragment, SetStateAction, useState } from 'react'
 import { mutate } from 'swr'
 import LoadingSpinner from './LoadingSpinner'
